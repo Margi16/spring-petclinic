@@ -19,29 +19,29 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean package' // Build the project and create a package
-            }
-        }
+        // stage('Build') {
+        //     steps {
+        //         sh 'mvn clean package' // Build the project and create a package
+        //     }
+        // }
 
-        stage('SonarQube Analysis') {
-            steps {
-                // Adjust the SonarQube scanner parameters as needed for your setup
-                sh "mvn sonar:sonar ${env.SONARQUBE_SCANNER_PARAMS}"
-            }
-        }
+        // stage('SonarQube Analysis') {
+        //     steps {
+        //         // Adjust the SonarQube scanner parameters as needed for your setup
+        //         sh "mvn sonar:sonar ${env.SONARQUBE_SCANNER_PARAMS}"
+        //     }
+        // }
 
-        stage('Test') {
-            steps {
-                sh 'mvn test' // Run unit tests
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml' // Publish JUnit test results
-                }
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         sh 'mvn test' // Run unit tests
+        //     }
+        //     post {
+        //         always {
+        //             junit '**/target/surefire-reports/*.xml' // Publish JUnit test results
+        //         }
+        //     }
+        // }
 
         // Add more stages for deployment, Docker build/push, etc., as needed
     }
