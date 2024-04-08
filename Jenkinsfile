@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         git(url: 'https://github.com/Margi16/spring-petclinic.git', branch: 'main')
-        sh './mvnw clean package -Dskip Tests'
+        sh './mvnw clean package -DskipTests=true'
       }
     }
     stage('Sonarqube') {
