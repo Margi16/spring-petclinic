@@ -4,12 +4,14 @@ pipeline {
     stage('Build') {
       steps {
         git(url: 'https://github.com/Margi16/spring-petclinic.git', branch: 'main')
-        sh './mvnw clean package'
+        sh './mvnw clean package -Dskip Tests'
       }
     }
     stage('Sonarqube') {
       steps {
-        sh './mvnw clean verify sonar:sonar -Dsonar.projectKey=jenkins -Dsonar.host.url=http://localhost:9000 -Dsonar.login=squ_3b5a85fa4431d9e0ecffca7b877e1a6b0985b9a1'
+        withSonarQubeEnv('SonarQube') {
+          sh './mvnw clean verify sonar:sonar -Dsonar.projectKey=jenkins -Dsonar.host.url=http://localhost:9000 -Dsonar.login=squ_3b5a85fa4431d9e0ecffca7b877e1a6b0985b9a1'
+        }
       }
     }
     
