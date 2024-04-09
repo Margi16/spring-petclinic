@@ -9,7 +9,7 @@ pipeline {
     }
     stage('Sonarqube') {
       steps {
-        withSonarQubeEnv('SonarQube') {
+        withSonarQubeEnv('sq1') {
           sh './mvnw clean verify sonar:sonar -Dsonar.projectKey=jenkins -Dsonar.host.url=http://localhost:9000 -Dsonar.login=squ_3b5a85fa4431d9e0ecffca7b877e1a6b0985b9a1'
         }
       }
