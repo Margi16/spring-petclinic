@@ -28,7 +28,7 @@
         #   sh -c "
         #   apt update &&
         #   apt install -y openjdk-11-jre-headless &&
-        #   wget -O petclinic.jar /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar &&
+        #   wget -O petclinic.jar /var/jenkins_home/workspace/spring-petclinic_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar &&
         #   java -jar petclinic.jar
         #   "
         ports:
