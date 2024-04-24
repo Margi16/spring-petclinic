@@ -1,0 +1,34 @@
+- hosts: prod
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Pull the latest Ubuntu image
+      docker_image:
+        name: ubuntu
+        tag: 20.04
+        source: pull
+    
+    - name: Create a container running Petclinic
+      docker_container:
+        name: petclinic
+        image: ubuntu:20.04
+        command: >
+          sh -c "
+          apt update &&
+          apt install -y openjdk-11-jre-headless &&
+          wget -O petclinic.jar /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar &&
+          java -jar petclinic.jar
+          "
+        ports:
+          - "8080:8080"
+        detached: yes
+        state: started
+    
+    # - name: Deploy Petclinic Application
+    #   copy:
+    #     src: /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar
+    #     dest: /opt/petclinic.jar
+    # - name: Run Petclinic Application
+    #   command: java -jar /opt/petclinic.jar --server.port=80

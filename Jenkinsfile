@@ -15,10 +15,18 @@ pipeline {
       }
     }
     
-    stage('Run') {
-      steps {
-        sh 'java -jar /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar -Dserver.port=8081 &'
-      }
-    }
+    // not needed - comment
+    // stage('Run') {
+    //   steps {
+    //     sh 'java -jar /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar -Dserver.port=8081 &'
+    //   }
+    // }
+
+    stage('Deploy') {
+            steps {
+                // Ensure the inventory file points to your production server
+                ansiblePlaybook(playbook: 'deploy.yml', inventory: 'inventory.ini')
+            }
+        }
   }
 }
