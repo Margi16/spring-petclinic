@@ -24,13 +24,13 @@
       docker_container:
         name: petclinic
         image: ubuntu:20.04
-        command: >
-          sh -c "
-          apt update &&
-          apt install -y openjdk-11-jre-headless &&
-          wget -O petclinic.jar /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar &&
-          java -jar petclinic.jar
-          "
+        # command: >
+        #   sh -c "
+        #   apt update &&
+        #   apt install -y openjdk-11-jre-headless &&
+        #   wget -O petclinic.jar /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar &&
+        #   java -jar petclinic.jar
+        #   "
         ports:
           - "8080:8080"
         detached: yes
