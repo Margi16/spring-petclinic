@@ -23,10 +23,10 @@ pipeline {
     // }
 
     stage('Deploy') {
-            steps {
-                // Ensure the inventory file points to your production server
-                ansiblePlaybook(playbook: 'deploy.yml', inventory: 'inventory.ini')
-            }
-        }
+      steps {
+      // Ensure the inventory file points to your production server
+        ansiblePlaybook(playbook: 'deploy.yml', inventory: 'inventory.ini')
+      }
+    }
   }
 }
