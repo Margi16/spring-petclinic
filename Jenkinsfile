@@ -26,7 +26,7 @@ pipeline {
       steps {
       // Ensure the inventory file points to your production server
       sshagent(['sshKey']) {
-        sh '/usr/bin/ansible-playbook ansible/deploy.yml -i ansible/inventory.ini'
+        sh '/usr/bin/ansible-playbook deploy.yml -i inventory.ini'
         //     ansiblePlaybook(playbook: 'deploy.yml', inventory: 'inventory.ini')
       }
       }
