@@ -32,4 +32,16 @@ pipeline {
       }
     }
   }
+  post {
+        success {
+            echo "Build succeeded!"
+        }
+        failure {
+            echo "Build failed.."
+        }
+        always {
+            echo "Pipeline completed!"
+        }
+    }
+
 }
