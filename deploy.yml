@@ -29,29 +29,29 @@
         jar: /opt/petclinic/petclinic.jar
         args: --server.port=8080
 
-- hosts: localhost
-  become: yes
-  tasks:
+# - hosts: localhost
+#   become: yes
+#   tasks:
 
-    - name: Pull latest Ubuntu image
-      docker_image:
-        name: ubuntu
-        tag: '20.04'
-        source: pull
+#     - name: Pull latest Ubuntu image
+#       docker_image:
+#         name: ubuntu
+#         tag: '20.04'
+#         source: pull
 
-    - name: Create Docker container for Petclinic
-      docker_container:
-        name: petclinic
-        image: ubuntu:20.04
-        command: |
-          apt-get update
-          apt-get install -y openjdk-11-jre-headless
-          wget -O petclinic.jar https://example.com/petclinic.jar
-          java -jar petclinic.jar
-        ports:
-          - "8080:8080"
-        detached: yes
-        state: started
+#     - name: Create Docker container for Petclinic
+#       docker_container:
+#         name: petclinic
+#         image: ubuntu:20.04
+#         command: |
+#           apt-get update
+#           apt-get install -y openjdk-11-jre-headless
+#           wget -O petclinic.jar https://example.com/petclinic.jar
+#           java -jar petclinic.jar
+#         ports:
+#           - "8080:8080"
+#         detached: yes
+#         state: started
         
 # - name: prod
 #   hosts: localhost
