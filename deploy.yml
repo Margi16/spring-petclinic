@@ -1,66 +1,121 @@
-- name: prod
-  hosts: localhost
-  connection: local
-  gather_facts: no
+---
+- hosts: localhost
   become: yes
-
-  # tasks:
-  #   - name: copy the jar file to target host
-  #     copy:
-  #       src: ./target/spring-petclinic-2.4.2.jar
-  #       dest: ./petclinic.jar
-  #   - name: install openjdk11
-  #     become: yes
-  #     apt:
-  #       name: openjdk-11-jre
-  #       state: latest
-  #       update_cache: yes
-  #   - name: run the jar file
-  #     shell: nohup java -jar petclinic.jar &
-  #     args:
-  #       executable: /bin/bash
-
   tasks:
-    - name: Update and upgrade apt packages
+
+    - name: Update apt cache
       apt:
         update_cache: yes
-        upgrade: 'yes'
 
     - name: Install OpenJDK 11
       apt:
         name: openjdk-11-jdk
         state: present
 
-    - name: Pull the latest Ubuntu image
+    - name: Create deployment directory
+      file:
+        path: /opt/petclinic
+        state: directory
+        mode: '0755'
+
+    - name: Copy JAR file to deployment directory
+      copy:
+        src: /var/jenkins_home/workspace/spring-petclinic_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar
+        dest: /opt/petclinic/petclinic.jar
+        mode: '0644'
+
+    - name: Run Spring Petclinic application
+      java_jar:
+        jar: /opt/petclinic/petclinic.jar
+        args: --server.port=8080
+
+- hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Pull latest Ubuntu image
       docker_image:
         name: ubuntu
-        tag: 20.04
+        tag: '20.04'
         source: pull
-    
-    - name: Create a container running Petclinic
+
+    - name: Create Docker container for Petclinic
       docker_container:
         name: petclinic
         image: ubuntu:20.04
-        command: >
-          sh -c "
-          apt update &&
-          apt install -y openjdk-11-jre-headless &&
-          wget -O petclinic.jar /var/jenkins_home/workspace/spring-petclinic_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar &&
+        command: |
+          apt-get update
+          apt-get install -y openjdk-11-jre-headless
+          wget -O petclinic.jar https://example.com/petclinic.jar
           java -jar petclinic.jar
-          "
         ports:
           - "8080:8080"
         detached: yes
-        state: started 
-    - name: deploy one petclinic to one server
-      hosts: service
+        state: started
+        
+# - name: prod
+#   hosts: localhost
+#   connection: local
+#   gather_facts: no
+#   become: yes
+
+#   # tasks:
+#   #   - name: copy the jar file to target host
+#   #     copy:
+#   #       src: ./target/spring-petclinic-2.4.2.jar
+#   #       dest: ./petclinic.jar
+#   #   - name: install openjdk11
+#   #     become: yes
+#   #     apt:
+#   #       name: openjdk-11-jre
+#   #       state: latest
+#   #       update_cache: yes
+#   #   - name: run the jar file
+#   #     shell: nohup java -jar petclinic.jar &
+#   #     args:
+#   #       executable: /bin/bash
+
+#   tasks:
+#     - name: Update and upgrade apt packages
+#       apt:
+#         update_cache: yes
+#         upgrade: 'yes'
+
+#     - name: Install OpenJDK 11
+#       apt:
+#         name: openjdk-11-jdk
+#         state: present
+
+#     - name: Pull the latest Ubuntu image
+#       docker_image:
+#         name: ubuntu
+#         tag: 20.04
+#         source: pull
+    
+#     - name: Create a container running Petclinic
+#       docker_container:
+#         name: petclinic
+#         image: ubuntu:20.04
+#         command: >
+#           sh -c "
+#           apt update &&
+#           apt install -y openjdk-11-jre-headless &&
+#           wget -O petclinic.jar /var/jenkins_home/workspace/spring-petclinic_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar &&
+#           java -jar petclinic.jar
+#           "
+#         ports:
+#           - "8080:8080"
+#         detached: yes
+#         state: started 
+#     - name: deploy one petclinic to one server
+#       hosts: service
 
 
 
 
-    # - name: Deploy Petclinic Application
-    #   copy:
-    #     src: /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar
-    #     dest: /opt/petclinic.jar
-    # - name: Run Petclinic Application
-    #   command: java -jar /opt/petclinic.jar --server.port=80
+#     # - name: Deploy Petclinic Application
+#     #   copy:
+#     #     src: /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar
+#     #     dest: /opt/petclinic.jar
+#     # - name: Run Petclinic Application
+#     #   command: java -jar /opt/petclinic.jar --server.port=80
