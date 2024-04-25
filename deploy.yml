@@ -24,7 +24,7 @@
         mode: '0644'
 
     - name: Run Spring Petclinic application
-      shell: java -jar /opt/petclinic/petclinic.jar --server.port=8081
+      shell: nohup java -jar /opt/petclinic/petclinic.jar --server.port=8081 > /dev/null 2>&1 &
       args:
         chdir: /opt/petclinic
         executable: /bin/bash
