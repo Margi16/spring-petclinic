@@ -18,7 +18,7 @@ pipeline {
     // not needed - comment
     stage('Run') {
       steps {
-        sh 'java -jar /var/jenkins_home/workspace/spc_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar -Dserver.port=8081 &'
+        sh 'java -jar /var/jenkins_home/workspace/spring-petclinic_main/target/spring-petclinic-3.2.0-SNAPSHOT.jar -Dserver.port=8081 &'
       }
     }
 
