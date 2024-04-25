@@ -3,6 +3,23 @@
   connection: local
   gather_facts: no
   become: yes
+
+  tasks:
+    - name: copy the jar file to target host
+      copy:
+        src: ./target/spring-petclinic-2.4.2.jar
+        dest: ./petclinic.jar
+    - name: install openjdk11
+      become: yes
+      apt:
+        name: openjdk-11-jre
+        state: latest
+        update_cache: yes
+    - name: run the jar file
+      shell: nohup java -jar petclinic.jar &
+      args:
+        executable: /bin/bash
+
   # tasks:
   #   - name: Update and upgrade apt packages
   #     apt:
@@ -38,21 +55,7 @@
 # - name: deploy one petclinic to one server
 #   hosts: service
 
-  tasks:
-  - name: copy the jar file to target host
-    copy:
-      src: ./target/spring-petclinic-2.4.2.jar
-      dest: ./petclinic.jar
-  - name: install openjdk11
-    become: yes
-    apt:
-      name: openjdk-11-jre
-      state: latest
-      update_cache: yes
-  - name: run the jar file
-    shell: nohup java -jar petclinic.jar &
-    args:
-      executable: /bin/bash
+
 
 
     # - name: Deploy Petclinic Application
