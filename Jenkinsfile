@@ -25,7 +25,7 @@ pipeline {
     stage('Deploy') {
       steps {
       // Ensure the inventory file points to your production server
-        ansiblePlaybook(playbook: 'deploy.yml', inventory: 'inventory.ini')
+        ansiblePlaybook(playbook: '/var/jenkins_home/workspace/spring-petclinic_main/deploy.yml', inventory: '/var/jenkins_home/workspace/spring-petclinic_main/inventory.ini')
       }
     }
   }
