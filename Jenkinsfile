@@ -25,10 +25,10 @@ pipeline {
     stage('Deploy') {
       steps {
       // Ensure the inventory file points to your production server
-      // sshagent(key in jenkins ui) {
+      sshagent(['sshKey']) {
         sh 'ansible-playbook ansible/deploy.yml -i ansible/inventory.ini'
         //     ansiblePlaybook(playbook: 'deploy.yml', inventory: 'inventory.ini')
-      // }
+      }
       }
     }
   }
